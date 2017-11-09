@@ -49,6 +49,13 @@ Usage:
 
 J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt,options_MPF)
 
-where msa_bin_unique is a binary potts extension of the original MSA (which is produced by the provided function binMatAfterComb), weight_seq_unique is the weighting of each sequence in msa_bin_unique, num_mutants_combine_array is the number of mutants at each residue after mutant combining, phi_opt is the mutant combining factor obtained from step 1 (this can be manually set by the user, though this should also be manually set in the binMatAfterComb function)
+where the inputs are:
+
+msa_bin_unique  - a binary potts extension of the original MSA (which is produced by the provided function binMatAfterComb)
+weight_seq_unique  -  the weighting of each sequence in msa_bin_unique (which is produced by the provided function binMatAfterComb)
+num_mutants_combine_array  -  the number of mutants at each residue after mutant combining (which is produced by the provided function binMatAfterComb)
+phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the binMatAfterComb function.
+
+The output is a flattened vector of the fields/couplings (the matr
 
 Any questions or comments, please email raylouie@hotmail.com
