@@ -15,6 +15,7 @@ RHY Louie, KJ Kaczorowski, JP Barton, A Chakraborty, MR McKay, "The fitness land
 To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" which need to be built: K_dK_MPF.c and gibbs_potts_mex.c. Typically
 
 mex K_dK_MPF.c
+
 mex gibbs_potts_mex.c
 
 should work, however, there are many tutorials online which describe how to build MEX files.
@@ -33,6 +34,7 @@ phi_opt = mutantCombining(msa_aa, weight_seq);
 where the inputs are:
 
 msa_aa - a matrix of characters, with each row representing a sequence of observed states (or in the context of the PNAS paper, the aminoi acid multiple-sequence-alignment (MSA)) 
+
 weight_seq - the weighting of each sequence,
 
 and the outputs:
@@ -52,8 +54,11 @@ J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_o
 where the inputs are:
 
 msa_bin_unique  - a binary potts extension of the original MSA (which is produced by the provided function binMatAfterComb)
+
 weight_seq_unique  -  the weighting of each sequence in msa_bin_unique (which is produced by the provided function binMatAfterComb)
+
 num_mutants_combine_array  -  the number of mutants at each residue after mutant combining (which is produced by the provided function binMatAfterComb)
+
 phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the binMatAfterComb function.
 
 The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence x is calculated as x' J_MPF x.
