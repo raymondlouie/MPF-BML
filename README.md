@@ -59,7 +59,7 @@ weight_seq_unique  -  the weighting of each sequence in msa_bin_unique (which is
 
 num_mutants_combine_array  -  the number of mutants at each residue after mutant combining (which is produced by the provided function `binMatAfterComb`)
 
-phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the binMatAfterComb function.
+phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the `binMatAfterComb` function.
 
 The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence x is calculated as x' J_MPF x.
 
@@ -69,6 +69,6 @@ This step implements the RPROP algorithm. Usage:
 
 `J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);`
 
-where the inputs are the same as those in MPF_run, with the exception of the first argument, which is a flattened fields/couplings vector which initalizes the BML algorithm.
+where the inputs are the same as those in MPF_run, with the exception of the first argument J_MPF(:), which is a flattened fields/couplings vector which initalizes the BML algorithm.
 
 Any questions or comments, please email raylouie@hotmail.com
