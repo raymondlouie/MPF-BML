@@ -1,4 +1,4 @@
-function J_MINFLOW_mat_array = BML_run(J_MINFLOW_mat_array,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML)
+function J_MINFLOW_mat = BML_run(J_MINFLOW_mat_array,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML)
 % BML_run(J_MINFLOW_mat_array,num_mutants_combine_array,msa_bin_unique,weight_seq_unique,options_BML)
 % 
 % Implementation of RPROP algorithm
@@ -277,6 +277,7 @@ J_MINFLOW_mat = (J_curr - diag(diag(J_curr))) + diag(h_curr);
 J_MINFLOW_mat = (J_MINFLOW_mat+J_MINFLOW_mat')/2;
 J_MINFLOW_mat_array = J_MINFLOW_mat(:);
 J_MINFLOW_mat_array(indZero)=0;
+J_MINFLOW_mat = reshape(J_MINFLOW_mat_array,num_residues_binary,num_residues_binary);
 
 if parOpt
     delete(poolobj)

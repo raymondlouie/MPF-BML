@@ -127,7 +127,10 @@ disp(['Intermediate step - Extended binary matrix and other stats, Time: ' num2s
 
 time_step2_MPF = tic();
 
-J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt);
+options_MPF.lambda_J = 0.01; % L1 regularization parameter
+options_MPF.gamma_J = 0.02; % L2 regularization parameter
+
+J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt,options_MPF);
 
 time_step2_MPF = toc(time_step2_MPF);
 
@@ -141,19 +144,18 @@ time_step2_BML = tic();
 
 options_BML.no_iterations=20;
 
-J_MPF_BML =BML_run(J_MPF,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
+J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
 
 time_step2_BML = toc(time_step2_BML);
 
 disp(['Step 3: BML, Time: ' num2str(time_step2_BML) ' seconds']);
 
 num_residues_binary = size(msa_bin_unique,2);
-J_MPF_BML_mat = reshape(J_MPF_BML,num_residues_binary,num_residues_binary);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Verification of the landscape
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-out = verifyParam(J_MPF,msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
+out = verifyParam(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
 
-out = verifyParam(J_MPF_BML,msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
+out = verifyParam(J_MPF_BML(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
