@@ -14,11 +14,11 @@ RHY Louie, KJ Kaczorowski, JP Barton, A Chakraborty, MR McKay, "The fitness land
 
 To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" which need to be built: K_dK_MPF.c and gibbs_potts_mex.c. Typically
 
-mex K_dK_MPF.c
+mex `K_dK_MPF.c
 
-mex gibbs_potts_mex.c
+mex `gibbs_potts_mex.c
 
-should work, however, there are many tutorials online which describe how to build MEX files.
+should work.
 
 ## Details and usage of the MPF-BML implementation
 
