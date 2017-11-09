@@ -14,9 +14,9 @@ RHY Louie, KJ Kaczorowski, JP Barton, A Chakraborty, MR McKay, "The fitness land
 
 To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" which need to be built: K_dK_MPF.c and gibbs_potts_mex.c. Typically
 
-mex `K_dK_MPF.c
+mex `K_dK_MPF.c`
 
-mex `gibbs_potts_mex.c
+mex `gibbs_potts_mex.c`
 
 should work.
 
@@ -29,7 +29,7 @@ The code to get started is main_MPF_BML.m, which runs the complete framework, an
 
 The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. Usage:
 
-phi_opt = mutantCombining(msa_aa, weight_seq);
+`phi_opt = mutantCombining(msa_aa, weight_seq);`
 
 where the inputs are:
 
@@ -49,15 +49,15 @@ Sohl-Dickstein J, Battaglino P, DeWeese MR (2009) Minimum Probability Flow learn
 
 Usage:
 
-J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt,options_MPF)
+`J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt,options_MPF);`
 
 where the inputs are:
 
-msa_bin_unique  - a binary potts extension of the original MSA (which is produced by the provided function binMatAfterComb)
+msa_bin_unique  - a binary potts extension of the original MSA (which is produced by the provided function `binMatAfterComb`)
 
-weight_seq_unique  -  the weighting of each sequence in msa_bin_unique (which is produced by the provided function binMatAfterComb)
+weight_seq_unique  -  the weighting of each sequence in msa_bin_unique (which is produced by the provided function `binMatAfterComb`)
 
-num_mutants_combine_array  -  the number of mutants at each residue after mutant combining (which is produced by the provided function binMatAfterComb)
+num_mutants_combine_array  -  the number of mutants at each residue after mutant combining (which is produced by the provided function `binMatAfterComb`)
 
 phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the binMatAfterComb function.
 
@@ -67,7 +67,7 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 This step implements the RPROP algorithm. Usage:
 
-J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
+`J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);`
 
 where the inputs are the same as those in MPF_run, with the exception of the first argument, which is a flattened fields/couplings vector which initalizes the BML algorithm.
 
