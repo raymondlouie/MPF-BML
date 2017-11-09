@@ -65,7 +65,7 @@ phi_opt  - the mutant combining factor obtained from step 1. This can be manuall
 
 The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence x is calculated as x' J_MPF x.
 
-##### (3) BML
+#### (3) BML
 
 This step implements the RPROP algorithm. 
 
