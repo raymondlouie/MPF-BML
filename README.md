@@ -73,6 +73,6 @@ This step implements the RPROP algorithm.
 
 `J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);`
 
-where the inputs are the same as those in MPF_run, with the exception of the first argument J_MPF(:), which is a flattened fields/couplings vector which initalizes the BML algorithm.
+where the inputs are as described in Step 2, with the exception of the first argument J_MPF(:), which is a flattened fields/couplings vector which initalizes the BML algorithm.
 
 Any questions or comments, please email raylouie@hotmail.com
