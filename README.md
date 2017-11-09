@@ -22,7 +22,7 @@ should work.
 
 ## Details and usage of the MPF-BML implementation
 
-The computational framework is an algorithm to find the field and coupling parameters of the Maximum Entropy distribution.  
+The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  
 The code to get started is main_MPF_BML.m, which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three steps, each of which can be run independently of the other:
 
 #### (1) Mutant Combining
