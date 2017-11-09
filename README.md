@@ -22,8 +22,7 @@ should work.
 
 ## Details and usage of the MPF-BML implementation
 
-The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  
-The code to get started is 
+The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  The code to get started is 
 
 `main_MPF_BML.m`
 
@@ -71,7 +70,7 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 #### (3) BML
 
-This step implements the RPROP algorithm. 
+This step implements the RPROP algorithm to  refine the parameters inferred from MPF.
 
 ##### Usage
 
