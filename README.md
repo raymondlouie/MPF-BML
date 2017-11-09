@@ -2,7 +2,7 @@
 
 This repository contains 
 
-1. Implementation of the MPF-BML framework (MATLAB) (an algorithm which infers the parameters of the Maximum Entropy potts distribution)  
+1. Implementation (in MATLAB) of the MPF-BML framework (an algorithm which infers the parameters of the Maximum Entropy potts distribution)  
 2. Preprocessed MSA of gp160 (fast format) and
 3. Gp160 landscape (MATLAB .mat format)
 
