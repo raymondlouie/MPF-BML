@@ -12,7 +12,7 @@ RHY Louie, KJ Kaczorowski, JP Barton, A Chakraborty, MR McKay, "The fitness land
 
 ## Installation
 
-To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" which need to be built: K_dK_MPF.c and gibbs_potts_mex.c. Typically
+To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" which need to be built: `K_dK_MPF.c` and `gibbs_potts_mex.c`. Typically
 
 mex `K_dK_MPF.c`
 
