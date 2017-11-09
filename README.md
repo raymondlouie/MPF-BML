@@ -81,11 +81,11 @@ where the inputs are as described in Step 2, with the exception of the first arg
 
 ## Details of the MSA
 
-The processed MSA (as described in the paper) in fasta format `hivgp160_processed_MSA`. The weighting of each sequence is in `hivgp160_patient_weighting.mat`.
+The processed MSA (as described in the paper) in fasta format `hivgp160_processed_MSA.fasta`. The weighting of each sequence is in `hivgp160_patient_weighting.mat`.
 
 ## Landscape
 
-The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape` where J_MPF_BML is the field/coupling matrix (NB the off-diagonal entries are half the value of the true couplings, thus the energy of sequence x is calculated as x' J_MPF_BML x), amino_acid_after_combining is the amino acids in decreasing order of frequency at each of the 815 residues, and mut_mat is the mutant probaility matrix (after mutant combining).
+The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat` where J_MPF_BML is the field/coupling matrix (NB the off-diagonal entries are half the value of the true couplings, thus the energy of sequence x is calculated as x' J_MPF_BML x), amino_acid_after_combining is the amino acids in decreasing order of frequency at each of the 815 residues, and mut_mat is the mutant probaility matrix (after mutant combining).
 
 
 Any questions or comments, please email raylouie@hotmail.com
