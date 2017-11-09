@@ -27,7 +27,9 @@ The code to get started is main_MPF_BML.m, which runs the complete framework, an
 
 #### (1) Mutant Combining
 
-The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. Usage:
+The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. 
+
+##### Usage
 
 `phi_opt = mutantCombining(msa_aa, weight_seq);`
 
@@ -47,7 +49,7 @@ This step runs a regularized Potts and mex-function extension of the Minimum-Pro
 
 Sohl-Dickstein J, Battaglino P, DeWeese MR (2009) Minimum Probability Flow learning. Proc 28th ICML 107(Ml):12.
 
-Usage:
+##### Usage
 
 `J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt,options_MPF);`
 
@@ -65,7 +67,9 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 ##### (3) BML
 
-This step implements the RPROP algorithm. Usage:
+This step implements the RPROP algorithm. 
+
+##### Usage
 
 `J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);`
 
