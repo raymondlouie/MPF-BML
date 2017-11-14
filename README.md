@@ -12,17 +12,19 @@ RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness lan
 
 ## Installation
 
-The following toolboxes are required:
-
-1. Bioinformatics
-2. Communications System
-3. Parallel Computing
-
 To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built. To install
 
 1. Open MATLAB
 2. Change to the "Helper Functions" folder.
 3. Type `mex K_dK_MPF.c` and `mex gibbs_potts_mex.c`
+
+## Toolboxes
+
+The following MATLAB toolboxes are required:
+
+1. Bioinformatics
+2. Communications System
+3. Parallel Computing
 
 ## Details and usage of the MPF-BML implementation
 
@@ -30,19 +32,23 @@ The MPF-BML computational framework is an algorithm to infer the field and coupl
 
 `main_MPF_BML.m`
 
-which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three steps, each of which can be run independently of the other:
+which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three steps, each of which can be run independently of the other. Note that the MPF and BML 
 
 #### (1) Mutant Combining
 
 The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. 
 
-##### Usage
+##### Example usage
 
-`phi_opt = mutantCombining(msa_aa, weight_seq);`
+Choose the optimal combining factor from phi_array, a vector of possible values, and weight_seq, the weighting per sequence.
+
+`phi_array = [0:0.1:1]; 
+weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
+phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);`
 
 where the inputs are:
 
-msa_aa - a matrix of characters, with each row representing a sequence of observed states (or in the context of the paper, the aminoi acid multiple-sequence-alignment (MSA)) 
+msa_aa - a matrix of characters, with each row representing a sequence of observed states (or in the context of the paper, the amino acid multiple-sequence-alignment (MSA)) 
 
 weight_seq - the weighting of each sequence,
 
