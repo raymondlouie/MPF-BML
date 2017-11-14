@@ -89,7 +89,7 @@ Calculate the helper variables using `msa_aa` only, in which case the default
 ```
 phi_opt = 0; % Ising case
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-[...]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
+[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
 ```
 
 The default values of weight_seq is set to equal weighting per patient, i.e.,
