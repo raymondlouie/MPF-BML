@@ -27,7 +27,7 @@ The following MATLAB toolboxes are required:
 2. Communications System
 3. Parallel Computing
 
-## Details and usage of the MPF-BML implementation
+## Usage of the MPF-BML code
 
 The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  An example working code is the script
 
@@ -142,13 +142,14 @@ where the inputs are as described in "Intermediate step: helper variables" above
 
 `options_BML` - An (optional) options struct which controls the RPROP algorithm. More details can be found in "Troubleshooting" below.
 
-## Details of the MSA
+## gp160 processed MSA
 
 The processed MSA (as described in the paper) in fasta format `hivgp160_processed_MSA.fasta` is in the folder "MSA and Landscape". The weighting of each sequence is in `hivgp160_patient_weighting.mat`.
 
-## Details of the Landscape
+## gp160 landscape
 
 The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where J_MPF_BML is the field/coupling matrix (NB the off-diagonal entries are half the value of the true couplings, thus the energy of sequence x is calculated as x' J_MPF_BML x), amino_acid_after_combining is the amino acids in decreasing order of frequency at each of the 815 residues, and mut_mat is the mutant probaility matrix (after mutant combining).
 
+## Troubleshooting
 
 Any questions or comments, please email raylouie@hotmail.com
