@@ -52,9 +52,9 @@ The MPF-BML computational framework is an algorithm to infer the field and coupl
 
 `main_MPF_BML.m`
 
-which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. From now on, we assume all example commands are to be run in the MATLAB command prompt.
+which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. 
 
-First note that the input to each function is a sample character matrix `msa_aa`, which can be formed from a fasta file with name `fasta_name` by
+The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. Before describing the steps, first note that each function requires as input  a sample character matrix `msa_aa`, which can be formed from a fasta file with name `fasta_name` by
 
 ```
 [Header_fasta, Sequence_fasta] = fastaread(fasta_name);
@@ -62,6 +62,8 @@ msa_aa = cell2mat(Sequence_fasta');
 ```
 
 An example fasta file is provided in the folder "MSA and Landscape".
+
+We now describe the three steps, where we assume all examples are to be run in the MATLAB command prompt.
 
 #### Step 1: Mutant Combining
 
@@ -142,16 +144,27 @@ where the inputs are as described in "Intermediate step: helper variables" above
 `options_MPF` - This is an (optional) options struct file which controls various paramters of the algorithm. The most relevant parameters to tune are the regularization parameters, which can be manually set, e.g., by
 
 ```
-options_MPF.lambda_J = 0.01; % L1 regularization parameter for the couplings
-options_MPF.gamma_J = 0.02; % L2 regularization parameter for the couplings
-```
-Parameters which affect the speed and accuracy of the algorithm are
-
-```
-
+options_MPF.lambda_J = 10/num_patients; % L1 regularization parameter for the couplings
+options_MPF.gamma_J = 10/num_patients; % L2 regularization parameter for the couplings
+options_MPF.lambda_h = 0; % L1 regularization parameter for the fields/
+options_MPF.gamma_h = 0; % L2 regularization parameter for the fields
 ```
 
-More details can be found in "Troubleshooting" below.
+options_MPF,'verbose',1,'optTol',1e-20,'progTol',1e-20,...
+    'maxIter',10000,'suffDec',1e-4,'memory',10,'lambda_h',0,'lambda_J',10/num_patients,'gamma_h',0,'gamma_J',10/num_patients,'maxIterMPF',2);
+    
+MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates is given by (default parameters shown) 
+
+```
+options_MPF.optTol = 1e-20;
+options_MPF.protTol = 1e-20;
+```
+
+Increasing these values will result in a faster code at the expense of accuracy. Alternatively, the number of iterations in the gradient descent algorithm can be modified by
+
+```
+options_MPF.maxIter = 10000;
+```
 
 The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence `x` can be calculated as 
 
@@ -159,7 +172,7 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 #### Step 3: BML
 
-This step implements the RPROP algorithm to  refine the parameters inferred from MPF.
+This step implements the RPROP algorithm to  refine the parameters inferred from MPF. RPROP is essentially a gradient descent algorithm which we use to solve the original maximum-likelihood (ML) maximum entropy problem (as described in paper).
 
 ##### Example usage
 
@@ -172,7 +185,26 @@ where the inputs are as described in "Intermediate step: helper variables" above
 
 `J_init` - A flattened fields/couplings vector which initalizes the BML algorithm.
 
-`options_BML` - An (optional) options struct which controls the RPROP algorithm. More details can be found in "Troubleshooting" below.
+`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient are given by
+
+```
+options_BML.thin = 3e3; % thinning parameter
+options_BML.burnin = 1e4; % number of samples to burn
+options_BML.nosample_MCMC = 1e7 % number of samples before burning and thinning
+```
+We also provide the option to run MCMC using multiple seeds using multiple-cores, after which the samples are combined. The relevant options are (default shown)
+
+```
+options_BML.parOpt = 0; % using only one core. A value of "1" means multiple-cores are used
+options_BML.no_seeds = 1e4; % number of seeds
+```
+
+Finally, the BML algorithm will automatically stop when the average epsilon values are < 1 ( as described in paper). This can be turned off by (default=1)
+
+```
+options_BML.epsStop = 0; 
+```
+
 
 ## gp160 processed MSA
 
