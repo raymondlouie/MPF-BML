@@ -95,9 +95,9 @@ will produce the optimal combining factor using these default values.
 
 The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `binMatAfterComb.m`. These helper variables are 
 
-`msa_bin` - binary extended matrix after combining with factor phi_opt
+`msa_bin` - binary extended matrix after combining with factor `phi_opt`
 
-`msa_bin_unique` - unique rows of msa_bin
+`msa_bin_unique` - unique rows of `msa_bin`
 
 `weight_seq_unique` - weight of each sequence in `msa_bin_unique`
 
@@ -119,11 +119,11 @@ weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
 [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
 ```
 
-The default values of weight_seq is set to equal weighting per patient, i.e.,
+The default values of `weight_seq` is set to equal weighting per patient, i.e.,
 
 `weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient `
 
-while the default value of phi_opt is the Potts case, i.e.,
+while the default value of `phi_opt` is the Potts case, i.e.,
 
 `phi_opt=1; `
 
@@ -144,6 +144,11 @@ where the inputs are as described in "Intermediate step: helper variables" above
 ```
 options_MPF.lambda_J = 0.01; % L1 regularization parameter for the couplings
 options_MPF.gamma_J = 0.02; % L2 regularization parameter for the couplings
+```
+Parameters which affect the speed and accuracy of the algorithm are
+
+```
+
 ```
 
 More details can be found in "Troubleshooting" below.
@@ -175,8 +180,20 @@ The processed MSA (as described in the paper) in fasta format `hivgp160_processe
 
 ## gp160 landscape
 
-The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where J_MPF_BML is the field/coupling matrix (NB the off-diagonal entries are half the value of the true couplings, thus the energy of sequence x is calculated as x' J_MPF_BML x), amino_acid_after_combining is the amino acids in decreasing order of frequency at each of the 815 residues, and mut_mat is the mutant probaility matrix (after mutant combining).
+The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where J_MPF_BML is the field/coupling matrix. Note the the off-diagonal entries are half the value of the true couplings, thus the energy of sequence `x` is calculated as 
+
+`x'*J_MPF_BML*x`
+
+amino_acid_after_combining is the amino acids in decreasing order of frequency at each of the 815 residues, and mut_mat is the mutant probaility matrix (after mutant combining).
 
 ## Troubleshooting
 
-Any questions or comments, please email raylouie@hotmail.com
+##### Which regularization parameter should I choose?
+
+The choice of the regularization used in `MPF_run` can be chosen to achieve a balance between overfitting and underfitting, as described in the paper, which can be achieved through ensuring the "average epsilon" measure is close to one. We recommend that users conduct a sweep of different parameters, and run` BML_run`, whilst keeping an eye out on the average epsilon values (as defined in the paper). These values  are displayed in the command prompt at each iteration, when `BML_run` is run. If the BML is clearly not converging to an epsilon value close to one, then choose another set of regularization parameters.
+
+##### MPF runs too slowly
+
+##### BML runs too slowly
+
+Any other questions or comments, please email raylouie@hotmail.com
