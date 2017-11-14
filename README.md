@@ -15,8 +15,9 @@ RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness lan
 To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built. To install
 
 1. Open MATLAB
-2. Change to the "Helper Functions" folder.
-3. Type `mex K_dK_MPF.c` and `mex gibbs_potts_mex.c`
+2. Change directory to the "Helper Functions" folder.
+3. In the command prompt, enter` mex K_dK_MPF.c`
+4. In the command prompt, enter  `mex gibbs_potts_mex.c`
 
 ## Toolboxes
 
@@ -32,33 +33,18 @@ The MPF-BML computational framework is an algorithm to infer the field and coupl
 
 `main_MPF_BML.m`
 
-which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. First note that the input to each function is a sample character matrix `msa_aa`, which can be formed from a fasta file with name `fasta_name` by
+which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. 
+
+First note that the input to each function is a sample character matrix `msa_aa`, which can be formed from a fasta file with name `fasta_name` by
 
 ```
 [Header_fasta, Sequence_fasta] = fastaread(fasta_name);
 msa_aa = cell2mat(Sequence_fasta');
 ```
 
-In addition, the MPF (Step 2) and BML (Step 3) functions both require some helper variables, produced by the function `binMatAfterComb.m`, which produces the following outputs:
-
-msa_bin - binary extended matrix after combining with factor phi_opt
-msa_bin_unique - unique rows of msa_bin
-weight_seq_unique - weight of each sequence in msa_bin_unique
-freq_single_combine_array - frequency of each amino acid after combining with factor phi_opt.
-amino_single_combin_array - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
-num_mutants_combine_array - number of mutants at each residue
-phi_opt - optimal combining factor
-
-Example usage of this function is
-
-`[...]  = binMatAfterComb(msa_aa)`
-
-function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = binMatAfterComb(msa_aa,varargin)
-
-
 #### (1) Mutant Combining
 
-The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. 
+The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. The function which implements this is `mutantCombining` and the output phi_opt  is the optimal combining factor  which represents the fraction of the entropy obtained by "coarse-graining" or combining the least-frequent states to one state, compared to the entropy without combining. Note that phi_opt=0 corresponds to the pure Ising case, while phi_opt=1 corresponds to the pure Potts case.
 
 ##### Example usage
 
@@ -70,15 +56,43 @@ weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
 phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);
 ```
 
-where the inputs are:
+The default values of weight_seq is set to equal weighting per patient, i.e.,
 
-msa_aa - a matrix of characters, with each row representing a sequence of observed states (or in the context of the paper, the amino acid multiple-sequence-alignment (MSA)) 
+`weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient `
 
-weight_seq - the weighting of each sequence,
+while the default value of phi_array is
 
-and the outputs:
+`phi_array=[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9:0.1:1]; `
 
-phi_opt -  optimal combining factor  which represents the fraction of the entropy obtained by "coarse-graining" or combining the least-frequent states to one state, compared to the entropy without combining. Note that phi_opt=0 corresponds to the pure Ising case, while phi_opt=1 corresponds to the pure Potts case.
+#### Intermediate step: helper variables
+
+The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `binMatAfterComb.m`. These helper variables are 
+
+msa_bin - binary extended matrix after combining with factor phi_opt
+msa_bin_unique - unique rows of msa_bin
+weight_seq_unique - weight of each sequence in msa_bin_unique
+freq_single_combine_array - frequency of each amino acid after combining with factor phi_opt.
+amino_single_combin_array - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
+num_mutants_combine_array - number of mutants at each residue
+phi_opt - optimal combining factor
+
+Example usage 1:
+
+Calculate the helper variables using msa_aa only, in which case the default
+
+```
+phi_opt = 0; % Ising case
+weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
+[...]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
+```
+
+The default values of weight_seq is set to equal weighting per patient, i.e.,
+
+`weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient `
+
+while the default value of phi_opt is the Potts case, i.e.,
+
+`phi_opt=1; `
 
 #### (2) MPF
 
