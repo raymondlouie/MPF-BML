@@ -113,19 +113,19 @@ The MPF (Step 2) and BML (Step 3) functions both require  helper variables, prod
 
 ##### Example usage
 
-Calculate the helper variables using `msa_aa` only, in which case the default
+Calculate the helper variables for the Ising model and equal weight per patient:
 
 ```
-phi_opt = 0; % Ising case
+phi_opt = 0; % Ising model
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
 [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
 ```
 
-The default values of `weight_seq` is set to equal weighting per patient, i.e.,
+If `weight_seq` is not specified, it is set to equal weighting per patient, i.e.,
 
 `weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient `
 
-while the default value of `phi_opt` is the Potts case, i.e.,
+while the default value of `phi_opt` is the Potts model, i.e.,
 
 `phi_opt=1; `
 
@@ -169,7 +169,7 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 #### Step 3: BML
 
-This step implements the RPROP algorithm to  refine the parameters inferred from MPF. RPROP is essentially a gradient descent algorithm which we use to solve the original maximum-likelihood (ML) maximum entropy problem (as described in paper).
+This step implements the RPROP algorithm to  refine the parameters inferred from MPF. RPROP is a gradient descent algorithm which we use to solve the original maximum-likelihood (ML) maximum entropy problem (as described in paper).
 
 ##### Example usage
 
