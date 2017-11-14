@@ -4,13 +4,13 @@
 * [Installation](#installation)
 * [Toolboxes](#toolboxes)
 * [Usage of the MPF-BML code](#usage-of-the-mpf-bml-code)
-  * [(1) Mutant Combining](#1-mutant-combining)
+  * [Step 1: Mutant Combining](#1-mutant-combining)
     * [Example usage](#example-usage)
   * [Intermediate step: helper variables](#intermediate-step-helper-variables)
     * [Example usage](#example-usage-1)
-  * [(2) MPF](#2-mpf)
+  * [Step 2: MPF](#2-mpf)
     * [Example usage](#example-usage-2)
-  * [(3) BML](#3-bml)
+  * [Step 3: BML](#3-bml)
     * [Example usage](#example-usage-3)
 * [gp160 processed MSA](#gp160-processed-msa)
 * [gp160 landscape](#gp160-landscape)
@@ -61,7 +61,7 @@ First note that the input to each function is a sample character matrix `msa_aa`
 msa_aa = cell2mat(Sequence_fasta');
 ```
 
-#### (1) Mutant Combining
+#### Step 1: Mutant Combining
 
 The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. The function which implements this is `mutantCombining` and the output `phi_opt`  is the optimal combining factor  which represents the fraction of the entropy obtained by "coarse-graining" or combining the least-frequent states to one state, compared to the entropy without combining. Note that `phi_opt=0` corresponds to the pure Ising case, while `phi_opt=1` corresponds to the pure Potts case.
 
@@ -119,7 +119,7 @@ while the default value of phi_opt is the Potts case, i.e.,
 
 `phi_opt=1; `
 
-#### (2) MPF
+#### Step 2: MPF
 
 This step runs a regularized Potts and mex-function extension of the Minimum-Probability-Flow (MPF) algorithm, as originally proposed in 
 
@@ -144,7 +144,7 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 `x'*J_MPF*x`
 
-#### (3) BML
+#### Step 3: BML
 
 This step implements the RPROP algorithm to  refine the parameters inferred from MPF.
 
