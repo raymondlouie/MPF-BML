@@ -42,9 +42,9 @@ The purpose of this step is to reduce the number of states (resulting in a decre
 
 Choose the optimal combining factor from phi_array, a vector of possible values, and weight_seq, the weighting per sequence.
 
-`phi_array = [0:0.1:1]; 
+```phi_array = [0:0.1:1]; 
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);`
+phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);```
 
 where the inputs are:
 
