@@ -1,9 +1,19 @@
-##### Table of Contents  
-[Headers](#headers)  
-[Emphasis](#emphasis)  
-...snip...    
-<a name="headers"/>
-## Headers
+      * [Overview](#overview)
+      * [Installation](#installation)
+      * [Toolboxes](#toolboxes)
+      * [Usage of the MPF-BML code](#usage-of-the-mpf-bml-code)
+            * [(1) Mutant Combining](#1-mutant-combining)
+               * [Example usage](#example-usage)
+            * [Intermediate step: helper variables](#intermediate-step-helper-variables)
+               * [Example usage](#example-usage-1)
+            * [(2) MPF](#2-mpf)
+               * [Example usage](#example-usage-2)
+            * [(3) BML](#3-bml)
+               * [Example usage](#example-usage-3)
+      * [gp160 processed MSA](#gp160-processed-msa)
+      * [gp160 landscape](#gp160-landscape)
+      * [Troubleshooting](#troubleshooting)
+
 
 ## Overview
 
