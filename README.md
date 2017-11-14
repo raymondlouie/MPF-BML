@@ -12,7 +12,7 @@ RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness lan
 
 ## Installation
 
-To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built. To install
+To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built. This can be compiled by the following instructions:
 
 1. Open MATLAB
 2. Change directory to the "Helper Functions" folder.
@@ -63,6 +63,12 @@ The default values of weight_seq is set to equal weighting per patient, i.e.,
 while the default value of phi_array is
 
 `phi_array=[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9:0.1:1]; `
+
+Thus running 
+
+`phi_opt = mutantCombining(msa_aa);`
+
+will produce the optimal combining factor using these default values.
 
 #### Intermediate step: helper variables
 
