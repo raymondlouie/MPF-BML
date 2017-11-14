@@ -44,11 +44,11 @@ msa_aa = cell2mat(Sequence_fasta');
 
 #### (1) Mutant Combining
 
-The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. The function which implements this is `mutantCombining` and the output phi_opt  is the optimal combining factor  which represents the fraction of the entropy obtained by "coarse-graining" or combining the least-frequent states to one state, compared to the entropy without combining. Note that phi_opt=0 corresponds to the pure Ising case, while phi_opt=1 corresponds to the pure Potts case.
+The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. The function which implements this is `mutantCombining` and the output `phi_opt`  is the optimal combining factor  which represents the fraction of the entropy obtained by "coarse-graining" or combining the least-frequent states to one state, compared to the entropy without combining. Note that `phi_opt=0` corresponds to the pure Ising case, while `phi_opt=1` corresponds to the pure Potts case.
 
 ##### Example usage
 
-Choose the optimal combining factor from phi_array, a vector of possible values, and weight_seq, the weighting per sequence.
+Choose the optimal combining factor from `phi_array`, a vector of possible values, and `weight_seq`, the weighting per sequence.
 
 ```
 phi_array = [0:0.1:1]; 
@@ -68,17 +68,17 @@ while the default value of phi_array is
 
 The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `binMatAfterComb.m`. These helper variables are 
 
-msa_bin - binary extended matrix after combining with factor phi_opt
-msa_bin_unique - unique rows of msa_bin
-weight_seq_unique - weight of each sequence in msa_bin_unique
-freq_single_combine_array - frequency of each amino acid after combining with factor phi_opt.
-amino_single_combin_array - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
-num_mutants_combine_array - number of mutants at each residue
-phi_opt - optimal combining factor
+`msa_bin` - binary extended matrix after combining with factor phi_opt
+`msa_bin_unique` - unique rows of msa_bin
+`weight_seq_unique` - weight of each sequence in msa_bin_unique
+`freq_single_combine_array` - frequency of each amino acid after combining with factor phi_opt.
+`amino_single_combin_array` - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
+`num_mutants_combine_array` - number of mutants at each residue
+`phi_opt` - optimal combining factor
 
-Example usage 1:
+##### Example usage
 
-Calculate the helper variables using msa_aa only, in which case the default
+Calculate the helper variables using `msa_aa` only, in which case the default
 
 ```
 phi_opt = 0; % Ising case
@@ -114,7 +114,16 @@ num_mutants_combine_array  -  the number of mutants at each residue after mutant
 
 phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the `binMatAfterComb` function.
 
-The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence x is calculated as x' J_MPF x.
+options_MPF - an options struct file which controls various paramters of the algorithm. The most relevant parameters to tune are the regularization parameters, which can be manually set, e.g., by
+
+```
+options_MPF.lambda_J = 0.01; % L1 regularization parameter for the couplings
+options_MPF.gamma_J = 0.02; % L2 regularization parameter for the couplings
+```
+
+The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence `x` can be calculated as 
+
+`x'*J_MPF*x`
 
 #### (3) BML
 
