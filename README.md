@@ -28,11 +28,33 @@ The following MATLAB toolboxes are required:
 
 ## Details and usage of the MPF-BML implementation
 
-The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  The code to get started is 
+The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  An example working code is 
 
 `main_MPF_BML.m`
 
-which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three steps, each of which can be run independently of the other. Note that the MPF and BML 
+which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. First note that the input to each function is a sample character matrix `msa_aa`, which can be formed from a fasta file with name `fasta_name` by
+
+```
+[Header_fasta, Sequence_fasta] = fastaread(fasta_name);
+msa_aa = cell2mat(Sequence_fasta');
+```
+
+In addition, the MPF (Step 2) and BML (Step 3) functions both require some helper variables, produced by the function `binMatAfterComb.m`, which produces the following outputs:
+
+msa_bin - binary extended matrix after combining with factor phi_opt
+msa_bin_unique - unique rows of msa_bin
+weight_seq_unique - weight of each sequence in msa_bin_unique
+freq_single_combine_array - frequency of each amino acid after combining with factor phi_opt.
+amino_single_combin_array - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
+num_mutants_combine_array - number of mutants at each residue
+phi_opt - optimal combining factor
+
+Example usage of this function is
+
+`[...]  = binMatAfterComb(msa_aa)`
+
+function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = binMatAfterComb(msa_aa,varargin)
+
 
 #### (1) Mutant Combining
 
