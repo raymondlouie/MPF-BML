@@ -61,6 +61,8 @@ First note that the input to each function is a sample character matrix `msa_aa`
 msa_aa = cell2mat(Sequence_fasta');
 ```
 
+An example fasta file is provided in the folder "MSA and Landscape".
+
 #### Step 1: Mutant Combining
 
 The purpose of this step is to reduce the number of states (resulting in a decrease in the number of couplings)  to achieve a balance between bias and variance. The function which implements this is `mutantCombining` and the output `phi_opt`  is the optimal combining factor  which represents the fraction of the entropy obtained by "coarse-graining" or combining the least-frequent states to one state, compared to the entropy without combining. Note that `phi_opt=0` corresponds to the pure Ising case, while `phi_opt=1` corresponds to the pure Potts case.
@@ -94,11 +96,17 @@ will produce the optimal combining factor using these default values.
 The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `binMatAfterComb.m`. These helper variables are 
 
 `msa_bin` - binary extended matrix after combining with factor phi_opt
+
 `msa_bin_unique` - unique rows of msa_bin
-`weight_seq_unique` - weight of each sequence in msa_bin_unique
-`freq_single_combine_array` - frequency of each amino acid after combining with factor phi_opt.
-`amino_single_combine_array` - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
+
+`weight_seq_unique` - weight of each sequence in `msa_bin_unique`
+
+`freq_single_combine_array` - frequency of each amino acid after combining with factor `phi_opt`.
+
+`amino_single_combine_array` - amino acid sorted in decreasing order of frequency after combining with factor `phi_opt`
+
 `num_mutants_combine_array` - number of mutants at each residue
+
 `phi_opt` - optimal combining factor
 
 ##### Example usage
