@@ -149,10 +149,7 @@ options_MPF.gamma_J = 10/num_patients; % L2 regularization parameter for the cou
 options_MPF.lambda_h = 0; % L1 regularization parameter for the fields/
 options_MPF.gamma_h = 0; % L2 regularization parameter for the fields
 ```
-
-options_MPF,'verbose',1,'optTol',1e-20,'progTol',1e-20,...
-    'maxIter',10000,'suffDec',1e-4,'memory',10,'lambda_h',0,'lambda_J',10/num_patients,'gamma_h',0,'gamma_J',10/num_patients,'maxIterMPF',2);
-    
+ 
 MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates is given by (default parameters shown) 
 
 ```
@@ -196,7 +193,7 @@ We also provide the option to run MCMC using multiple seeds using multiple-cores
 
 ```
 options_BML.parOpt = 0; % using only one core. A value of "1" means multiple-cores are used
-options_BML.no_seeds = 1e4; % number of seeds
+options_BML.no_seeds = 4; % number of seeds
 ```
 
 Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by
