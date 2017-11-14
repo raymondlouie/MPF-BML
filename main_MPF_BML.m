@@ -146,7 +146,8 @@ disp(['Step 2: MPF, Time: ' num2str(time_step2_MPF) ' seconds']);
 
 time_step2_BML = tic();
 
-options_BML.no_iterations=20;
+options_BML.no_iterations=50;
+options_BML.epsMax = 1.25;
 
 J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
 
