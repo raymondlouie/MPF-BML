@@ -1,3 +1,5 @@
+## Table of Contents
+
 * [Overview](#overview)
 * [Installation](#installation)
 * [Toolboxes](#toolboxes)
@@ -9,7 +11,7 @@
       * [(2) MPF](#2-mpf)
           * [Example usage](#example-usage-2)
       * [(3) BML](#3-bml)
-               * [Example usage](#example-usage-3)
+          * [Example usage](#example-usage-3)
 * [gp160 processed MSA](#gp160-processed-msa)
 * [gp160 landscape](#gp160-landscape)
 * [Troubleshooting](#troubleshooting)
