@@ -2,7 +2,7 @@
 
 * [Overview](#overview)
 * [Installation](#installation)
-* [Toolboxes](#toolboxes)
+* [Required Toolboxes](#required-toolboxes)
 * [Usage of the MPF-BML code](#usage-of-the-mpf-bml-code)
   * [Step 1: Mutant Combining](#step-1-mutant-combining)
     * [Example usage](#example-usage)
@@ -38,7 +38,7 @@ To run the MPF and BML components of the framework, there are two C MEX files in
 3. In the command prompt, enter` mex K_dK_MPF.c`
 4. In the command prompt, enter  `mex gibbs_potts_mex.c`
 
-## Toolboxes
+## Required Toolboxes
 
 The following MATLAB toolboxes are required:
 
