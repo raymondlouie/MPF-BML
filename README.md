@@ -48,7 +48,7 @@ The following MATLAB toolboxes are required:
 
 ## Usage of the MPF-BML code
 
-The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  An example working code is the script
+The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  An example working code can be found in the script
 
 `main_MPF_BML.m`
 
