@@ -150,7 +150,7 @@ options_MPF.lambda_h = 0; % L1 regularization parameter for the fields/
 options_MPF.gamma_h = 0; % L2 regularization parameter for the fields
 ```
  
-MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates is given by (default parameters shown) 
+MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates can be set by (default parameters shown) 
 
 ```
 options_MPF.optTol = 1e-20;
@@ -182,7 +182,7 @@ where the inputs are as described in "Intermediate step: helper variables" above
 
 `J_init` - A flattened fields/couplings vector which initalizes the BML algorithm.
 
-`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient are given by
+`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient can be set, for example, by
 
 ```
 options_BML.thin = 3e3; % thinning parameter
