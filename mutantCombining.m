@@ -1,24 +1,56 @@
-function [phi_opt, beta_mean] = mutantCombining(msa_aa,weight_seq,phi_array)
+function [phi_opt, beta_mean] = mutantCombining(msa_aa,varargin)
 % mutantCombining(msa_aa,weight_seq,phi_array)
 % Calculates the optimal mutant combining factor
 %
 % Inputs:
-%       msa_aa - matrix of characters (aka amino acid MSA). Rows correspond to 
+%       msa_aa - matrix of characters (aka amino acid MSA). Rows correspond to
 %                sequences, and colums to observed states at a particular residue
-%       weight_seq -  weight of each sequence, length is equal to the the number of
-%                     rows in msa_aa. 
-%       phi_array - (optional) vector of combining factors to sweep over
+%       mutantCombining(...,'weight_seq',weight_seq)
+%                     weight of each sequence, length is equal to the the number of
+%                     rows in msa_aa. Default is equal weighting
+%       mutantCombining(...,'phi_array',phi_array) 
+%                     vector of combining factors to sweep over
 %                    Default=[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9:0.1:1]
-% 
+%
 % Outputs:
 %       phi_opt - optimal entropy combining factor from elements in phi_array
-%                 based on 
+%                 based on
 %       beta_mean - mean beta values for each element in phi_array
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if nargin < 3
-    % phi values to test for mutant combining
-    phi_array=[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9:0.1:1]; 
+num_seq = size(msa_aa,1);
+
+% set arguments
+if  nargin > 1
+    if rem(nargin,2) ~= 1
+        error('Incorrect number of arguments.');
+    end
+    okargs = {'weight_seq','phi_array'};
+    for j=1:2:nargin-1
+        pname = varargin{j};
+        pval = varargin{j+1};
+        k = find(strncmpi(pname,okargs,numel(pname)));
+        if isempty(k)
+            error(strcat('Unknown argument', pname));
+        else
+            switch(k)
+                case 1  
+                    weight_seq = pval;
+                case 2 
+                    phi_array=pval;
+                    
+            end
+        end
+    end
+end
+
+% Set default values
+if ~exist('weight_seq')
+  weight_seq = ones(num_seq,1);% equal weighting
+end
+
+if ~exist('phi_array')
+    phi_array=[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9:0.1:1];
 end
 
 [freq_single_array,amino_single_array] = helper_single_mut(msa_aa,weight_seq);

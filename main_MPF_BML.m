@@ -31,7 +31,6 @@ clear all;
 %     RHY Louie, KJ Kaczorowski, JP Barton, A Chakraborty, MR McKay
 %     (2017), The fitness landscape of the Human Immunodeficiency Virus 
 %     envelope protein that is targeted by antibodies, 
-%     Proc. Natl. Acad. Sci. 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -64,14 +63,14 @@ end
 % Set default weight and remove 100% conserved sites
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Set default weight_seq if not specified by user
-num_seq = size(msa_aa,1); % number of sequences
-if ~exist('weight_seq')
-    % set equal weighting if weighting vector not provided
-    weight_seq = ones(num_seq,1);
-end
+% % Set default weight_seq if not specified by user
+% num_seq = size(msa_aa,1); % number of sequences
+% if ~exist('weight_seq')
+%     % set equal weighting if weighting vector not provided
+%     weight_seq = ones(num_seq,1);
+% end
 
-num_patients = sum(weight_seq); % number of patients
+% num_patients = sum(weight_seq); % number of patients
 
 % Remove and find location of 100% conserved residues
 num_residue = size(msa_aa,2);
@@ -101,7 +100,9 @@ end
 
 time_step1_mutantcombine = tic();
 
-phi_opt = mutantCombining(msa_aa, weight_seq);
+% phi_opt = mutantCombining(msa_aa, 'phi_array',[0:0.01:1]);
+phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq);
+% phi_opt = mutantCombining(msa_aa);
 
 time_step1_mutantcombine = toc(time_step1_mutantcombine);
 
@@ -113,9 +114,12 @@ disp(['Step 1: Mutant combining, Time: ' num2str(time_step1_mutantcombine) ' sec
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 time_extendBin = tic();
 
-[msa_bin,msa_bin_unique,weight_seq_unique, freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = binMatAfterComb(msa_aa,weight_seq,phi_opt);
-mut_mat = full(((msa_bin_unique')*diag(weight_seq_unique)*msa_bin_unique))/num_patients; % mutant probability matrix
-[delta_cij delta_cij_bound] = calculateStd(mut_mat,num_patients);
+[msa_bin,msa_bin_unique,weight_seq_unique, freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = ...
+    binMatAfterComb(msa_aa,'weight_seq',weight_seq,'phi_opt',phi_opt);
+% [msa_bin,msa_bin_unique,weight_seq_unique, freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = binMatAfterComb(msa_aa,weight_seq,phi_opt);
+
+% mut_mat = full(((msa_bin_unique')*diag(weight_seq_unique)*msa_bin_unique))/num_patients; % mutant probability matrix
+% [delta_cij delta_cij_bound] = calculateStd(mut_mat,num_patients);
 
 time_extendBin = toc(time_extendBin);
 

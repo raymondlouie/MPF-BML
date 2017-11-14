@@ -1,4 +1,4 @@
-function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = binMatAfterComb(msa_aa,weight_seq,phi_opt)
+function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt] = binMatAfterComb(msa_aa,varargin)
 % binMatAfterComb(msa_aa,weight_seq,phi_opt)
 % 
 % Calculates the binary matrix and amino acid information after
@@ -7,10 +7,11 @@ function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,am
 % Inputs:
 %       msa_aa - matrix of characters (aka amino acid MSA). Rows correspond to 
 %                sequences, and colums to observed states at a particular residue
-%       weight_seq -  weight of each sequence, length is equal to the the number of
-%                     rows in msa_aa. 
-%       phi_array - (optional) vector of combining factors to sweep over
-%                    Default=[0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9:0.1:1]
+%       binMatAfterComb(...,'weight_seq',weight_seq)
+%                     weight of each sequence, length is equal to the the number of
+%                     rows in msa_aa. Default is equal weighting
+%       binMatAfterComb(...,'phi_opt',phi_opt)-  (optional) 
+%                     mutant combining factor. Default: phi_opt=1 (Potts)
 % 
 % Outputs:
 %       msa_bin - binary extended matrix after combining with factor phi_opt
@@ -21,10 +22,44 @@ function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,am
 %       amino_single_combin_array - amino acid sorted in decreasing order
 %                         of frequency after combining with factor phi_opt
 %       num_mutants_combine_array - number of mutants at each residue
+%       phi_opt - optimal combining factor
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if nargin ~=3
- disp('Not enough input arguments')
+
+
+num_seq = size(msa_aa,1);
+
+% set arguments
+if  nargin > 1
+    if rem(nargin,2) ~= 1
+        error('Incorrect number of arguments.');
+    end
+    okargs = {'weight_seq','phi_opt'};
+    for j=1:2:nargin-1
+        pname = varargin{j};
+        pval = varargin{j+1};
+        k = find(strncmpi(pname,okargs,numel(pname)));
+        if isempty(k)
+            error(strcat('Unknown argument', pname));
+        else
+            switch(k)
+                case 1  
+                    weight_seq = pval;
+                case 2 
+                    phi_opt=pval;
+                    
+            end
+        end
+    end
+end
+
+% Set default values
+if ~exist('weight_seq')
+  weight_seq = ones(num_seq,1);% equal weighting
+end
+
+if ~exist('phi_opt')
+    phi_opt=1;
 end
 
 [freq_single_array,amino_single_array] = helper_single_mut(msa_aa,weight_seq);
