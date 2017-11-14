@@ -182,7 +182,7 @@ where the inputs are as described in "Intermediate step: helper variables" above
 
 `J_init` - A flattened fields/couplings vector which initalizes the BML algorithm.
 
-`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient can be set, for example, by
+`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient can be set, for example, by (default shown)
 
 ```
 options_BML.thin = 3e3; % thinning parameter
@@ -193,16 +193,16 @@ We also provide the option to run MCMC using multiple seeds using multiple-cores
 
 ```
 options_BML.parOpt = 0; % using only one core. A value of "1" means multiple-cores are used
-options_BML.no_seeds = 4; % number of seeds
+options_BML.no_seeds = 1; % number of seeds
 ```
 
-Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by
+Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by (default shown)
 
 ```
-options_BML.epsMax = 1.25; 
+options_BML.epsMax = 1; 
 ```
 
-Thus using the above value, the BML algorithm will terminate when the average epsilon is < 1.25.
+Thus using the above value, the BML algorithm will terminate when the average epsilon is < 1. 
 
 ## gp160 processed MSA
 
@@ -221,5 +221,9 @@ amino_acid_after_combining is the amino acids in decreasing order of frequency a
 ##### Which regularization parameter should I choose?
 
 The choice of the regularization used in `MPF_run` should ideally be chosen to achieve a balance between overfitting and underfitting, as described in the paper, which can be achieved through ensuring the "average epsilon" measure is close to one. We recommend that users conduct a sweep of different parameters, and run` BML_run`, whilst keeping an eye out on the average epsilon values (as defined in the paper). These values  are displayed in the command prompt at each iteration, when `BML_run` is run. If the BML is clearly not converging to an epsilon value close to one, then choose another set of regularization parameters. For example, to obtain a rough ballpark of how large the regularization parameters are, try first sweeping the L1 and L2 parameters over [1/10 1 10 100 1000 10000]/sum(weight_seq).
+
+##### The average epsilon is never < 1.
+
+Try changing the regularization parameters, as described above. 
 
 Any other questions or comments, please email raylouie@hotmail.com
