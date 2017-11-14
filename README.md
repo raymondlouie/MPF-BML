@@ -199,12 +199,13 @@ options_BML.parOpt = 0; % using only one core. A value of "1" means multiple-cor
 options_BML.no_seeds = 1e4; % number of seeds
 ```
 
-Finally, the BML algorithm will automatically stop when the average epsilon values are < 1 ( as described in paper). This can be turned off by (default=1)
+Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by
 
 ```
-options_BML.epsStop = 0; 
+options_BML.epsMax = 1.25; 
 ```
 
+Thus using the above value, the BML algorithm will terminate when the average epsilon is < 1.25.
 
 ## gp160 processed MSA
 
