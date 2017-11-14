@@ -61,7 +61,7 @@ The framework comprises of three main functions corresponding to the three key s
 msa_aa = cell2mat(Sequence_fasta');
 ```
 
-An example fasta file is provided in the folder "MSA and Landscape".
+The above code however, assumes that each sequence is of the same length, which you will have to ensure yourself. An example fasta file is provided in the folder "MSA and Landscape".
 
 We now describe the three steps, where we assume all examples are to be run in the MATLAB command prompt.
 
