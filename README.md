@@ -8,17 +8,15 @@ This repository contains
 
 as described in 
 
-RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness landscape of the Human Immunodeficiency Virus envelope protein that is targeted by antibodies", Proc. Natl. Acad. Sci., 2017
+RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness landscape of the Human Immunodeficiency Virus envelope protein that is targeted by antibodies", 2017
 
 ## Installation
 
-To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built: `K_dK_MPF.c` and `gibbs_potts_mex.c`. Typically
+To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built. To install
 
-mex `K_dK_MPF.c`
-
-mex `gibbs_potts_mex.c`
-
-should work.
+1. Open MATLAB
+2. Change to the "Helper Functions" folder.
+3. Type `mex K_dK_MPF.c` and `mex gibbs_potts_mex.c`
 
 ## Details and usage of the MPF-BML implementation
 
@@ -38,7 +36,7 @@ The purpose of this step is to reduce the number of states (resulting in a decre
 
 where the inputs are:
 
-msa_aa - a matrix of characters, with each row representing a sequence of observed states (or in the context of the PNAS paper, the aminoi acid multiple-sequence-alignment (MSA)) 
+msa_aa - a matrix of characters, with each row representing a sequence of observed states (or in the context of the paper, the aminoi acid multiple-sequence-alignment (MSA)) 
 
 weight_seq - the weighting of each sequence,
 
