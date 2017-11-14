@@ -112,7 +112,7 @@ Sohl-Dickstein J, Battaglino P, DeWeese MR (2009) Minimum Probability Flow learn
 
 where the inputs are as described in "Intermediate step: helper variables" above, with the exception of:
 
-`options_MPF` - This is an options struct file which controls various paramters of the algorithm. The most relevant parameters to tune are the regularization parameters, which can be manually set, e.g., by
+`options_MPF` - This is an (optional) options struct file which controls various paramters of the algorithm. The most relevant parameters to tune are the regularization parameters, which can be manually set, e.g., by
 
 ```
 options_MPF.lambda_J = 0.01; % L1 regularization parameter for the couplings
@@ -139,7 +139,8 @@ J_MPF_BML =BML_run(J_init,msa_bin_unique,weight_seq_unique,num_mutants_combine_a
 where the inputs are as described in "Intermediate step: helper variables" above, with the exception of 
 
 `J_init` - A flattened fields/couplings vector which initalizes the BML algorithm.
-`options_BML` - an options struct which controls the RPROP algorithm. More details can be found in "Troubleshooting" below.
+
+`options_BML` - An (optional) options struct which controls the RPROP algorithm. More details can be found in "Troubleshooting" below.
 
 ## Details of the MSA
 
