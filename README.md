@@ -12,6 +12,12 @@ RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness lan
 
 ## Installation
 
+The following toolboxes are required:
+
+1. Bioinformatics
+2. Communications System
+3. Parallel Computing
+
 To run the MPF and BML components of the framework, there are two C MEX files in the "Helper Functions" folder which need to be built. To install
 
 1. Open MATLAB
