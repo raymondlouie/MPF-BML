@@ -72,7 +72,7 @@ The MPF (Step 2) and BML (Step 3) functions both require  helper variables, prod
 `msa_bin_unique` - unique rows of msa_bin
 `weight_seq_unique` - weight of each sequence in msa_bin_unique
 `freq_single_combine_array` - frequency of each amino acid after combining with factor phi_opt.
-`amino_single_combin_array` - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
+`amino_single_combine_array` - amino acid sorted in decreasing order of frequency after combining with factor phi_opt
 `num_mutants_combine_array` - number of mutants at each residue
 `phi_opt` - optimal combining factor
 
@@ -100,26 +100,20 @@ This step runs a regularized Potts and mex-function extension of the Minimum-Pro
 
 Sohl-Dickstein J, Battaglino P, DeWeese MR (2009) Minimum Probability Flow learning. Proc 28th ICML 107(Ml):12.
 
-##### Usage
+##### Example usage
 
 `J_MPF = MPF_run(msa_bin_unique,weight_seq_unique,num_mutants_combine_array,phi_opt,options_MPF);`
 
-where the inputs are:
+where the inputs are as described in "Intermediate step: helper variables" above, with the exception of:
 
-msa_bin_unique  - a binary potts extension of the original MSA (which is produced by the provided function `binMatAfterComb`)
-
-weight_seq_unique  -  the weighting of each sequence in msa_bin_unique (which is produced by the provided function `binMatAfterComb`)
-
-num_mutants_combine_array  -  the number of mutants at each residue after mutant combining (which is produced by the provided function `binMatAfterComb`)
-
-phi_opt  - the mutant combining factor obtained from step 1. This can be manually set by the user, though this should also be manually set in the `binMatAfterComb` function.
-
-options_MPF - an options struct file which controls various paramters of the algorithm. The most relevant parameters to tune are the regularization parameters, which can be manually set, e.g., by
+`options_MPF` - This is an options struct file which controls various paramters of the algorithm. The most relevant parameters to tune are the regularization parameters, which can be manually set, e.g., by
 
 ```
 options_MPF.lambda_J = 0.01; % L1 regularization parameter for the couplings
 options_MPF.gamma_J = 0.02; % L2 regularization parameter for the couplings
 ```
+
+More details can be found in "Troubleshooting" below.
 
 The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence `x` can be calculated as 
 
@@ -129,11 +123,17 @@ The output is fields/couplings matrix. Note that the non-diagonal elements are a
 
 This step implements the RPROP algorithm to  refine the parameters inferred from MPF.
 
-##### Usage
+##### Example usage
 
-`J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);`
+```
+J_init = J_MPF(:);
+J_MPF_BML =BML_run(J_init,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
+```
 
-where the inputs are as described in Step 2, with the exception of the first argument J_MPF(:), which is a flattened fields/couplings vector which initalizes the BML algorithm.
+where the inputs are as described in "Intermediate step: helper variables" above, with the exception of 
+
+`J_init` - A flattened fields/couplings vector which initalizes the BML algorithm.
+`options_BML` - an options struct which controls the RPROP algorithm. More details can be found in "Troubleshooting" below.
 
 ## Details of the MSA
 
