@@ -118,7 +118,7 @@ Calculate the helper variables for the Ising model and equal weight per patient:
 ```
 phi_opt = 0; % Ising model
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = helper_variables(msa_aa,'weight_seq','phi_opt');
+[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = helper_variables(msa_aa,'weight_seq',weight_seq,'phi_opt',phi_opt);
 ```
 
 If `weight_seq` is not specified, it is set to equal weighting per patient, i.e.,
