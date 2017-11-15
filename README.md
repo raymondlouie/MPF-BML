@@ -21,7 +21,7 @@
 
 This repository contains 
 
-1. Implementation (in MATLAB) of the MPF-BML framework, an algorithm which infers the parameters of the Maximum Entropy distribution with the Potts model.  This is used to infer the fitness landscape of gp160 based on its sequence data. gp160 is a protein in HIV which is the primary target of antibodies.  
+1. Implementation (in MATLAB) of the MPF-BML framework, an algorithm which infers the parameters of the maximum entropy distribution using  the Potts model.  We apply this framework  to infer the fitness landscape of gp160 based on its sequence data, however the framework can be used for any problem requiring inference of the maximum entropy parameters. (gp160 is a protein in HIV which is the primary target of antibodies.)
 2. Preprocessed mulitple sequence alignment (MSA) of gp160 (fasta format) and
 3. Gp160 landscape (MATLAB .mat format)
 
@@ -48,7 +48,7 @@ The following MATLAB toolboxes are required:
 
 ## Usage of the MPF-BML code
 
-The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  An example working code is the script
+The MPF-BML computational framework is an algorithm to infer the field and coupling parameters of the Maximum Entropy distribution.  An example working code can be found in the script
 
 `main_MPF_BML.m`
 
@@ -61,7 +61,7 @@ The framework comprises of three main functions corresponding to the three key s
 msa_aa = cell2mat(Sequence_fasta');
 ```
 
-An example fasta file is provided in the folder "MSA and Landscape".
+The above code however, assumes that each sequence is of the same length, which you will have to ensure yourself. An example fasta file is provided in the folder "MSA and Landscape".
 
 We now describe the three steps, where we assume all examples are to be run in the MATLAB command prompt.
 
@@ -76,7 +76,7 @@ Choose the optimal combining factor from `phi_array`, a vector of possible value
 ```
 phi_array = [0:0.1:1]; 
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);
+phi_opt = mutant_combining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);
 ```
 
 The default values of weight_seq is set to equal weighting per patient, i.e.,
@@ -89,13 +89,13 @@ while the default value of phi_array is
 
 Thus running 
 
-`phi_opt = mutantCombining(msa_aa);`
+`phi_opt = mutant_combining(msa_aa);`
 
 will produce the optimal combining factor using these default values.
 
 #### Intermediate step: helper variables
 
-The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `binMatAfterComb.m`. These helper variables are 
+The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `helper_variables.m`. These helper variables are 
 
 `msa_bin` - binary extended matrix after combining with factor `phi_opt`
 
@@ -118,7 +118,7 @@ Calculate the helper variables for the Ising model and equal weight per patient:
 ```
 phi_opt = 0; % Ising model
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
+[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = helper_variables(msa_aa,'weight_seq','phi_opt');
 ```
 
 If `weight_seq` is not specified, it is set to equal weighting per patient, i.e.,
@@ -150,7 +150,7 @@ options_MPF.lambda_h = 0; % L1 regularization parameter for the fields/
 options_MPF.gamma_h = 0; % L2 regularization parameter for the fields
 ```
  
-MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates is given by (default parameters shown) 
+MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates can be set by (default parameters shown) 
 
 ```
 options_MPF.optTol = 1e-20;
@@ -182,7 +182,7 @@ where the inputs are as described in "Intermediate step: helper variables" above
 
 `J_init` - A flattened fields/couplings vector which initalizes the BML algorithm.
 
-`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient are given by
+`options_BML` - An (optional) options struct which controls the RPROP algorithm.  A key difficulty with solving the ML problem is due to the partition function, which renders the gradient difficult to calculate. We thus approximate the gradient using  MCMC simulations. The MCMC parameters used to approximate the gradient can be set, for example, by (default shown)
 
 ```
 options_BML.thin = 3e3; % thinning parameter
@@ -193,16 +193,16 @@ We also provide the option to run MCMC using multiple seeds using multiple-cores
 
 ```
 options_BML.parOpt = 0; % using only one core. A value of "1" means multiple-cores are used
-options_BML.no_seeds = 4; % number of seeds
+options_BML.no_seeds = 1; % number of seeds
 ```
 
-Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by
+Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by (default shown)
 
 ```
-options_BML.epsMax = 1.25; 
+options_BML.epsMax = 1; 
 ```
 
-Thus using the above value, the BML algorithm will terminate when the average epsilon is < 1.25.
+Thus using the above value, the BML algorithm will terminate when the average epsilon is < 1. 
 
 ## gp160 processed MSA
 
@@ -220,6 +220,10 @@ amino_acid_after_combining is the amino acids in decreasing order of frequency a
 
 ##### Which regularization parameter should I choose?
 
-The choice of the regularization used in `MPF_run` can be chosen to achieve a balance between overfitting and underfitting, as described in the paper, which can be achieved through ensuring the "average epsilon" measure is close to one. We recommend that users conduct a sweep of different parameters, and run` BML_run`, whilst keeping an eye out on the average epsilon values (as defined in the paper). These values  are displayed in the command prompt at each iteration, when `BML_run` is run. If the BML is clearly not converging to an epsilon value close to one, then choose another set of regularization parameters. For example, to obtain a rough ballpark of how large the regularization parameters are, try sweeping the L1 and L2 parameters over [1/10 1 10 100 1000 10000]/num_patients.
+The choice of the regularization used in `MPF_run` should ideally be chosen to achieve a balance between overfitting and underfitting, as described in the paper, which can be achieved through ensuring the "average epsilon" measure is close to one. We recommend that users conduct a sweep of different parameters, and run` BML_run`, whilst keeping an eye out on the average epsilon values (as defined in the paper). These values  are displayed in the command prompt at each iteration, when `BML_run` is run. If the BML is clearly not converging to an epsilon value close to one, then choose another set of regularization parameters. For example, to obtain a rough ballpark of how large the regularization parameters are, try first sweeping the L1 and L2 parameters over [1/10 1 10 100 1000 10000]/sum(weight_seq).
+
+##### The average epsilon is never < 1.
+
+Try changing the regularization parameters, as described above. 
 
 Any other questions or comments, please email raylouie@hotmail.com
