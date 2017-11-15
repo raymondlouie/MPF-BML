@@ -153,14 +153,14 @@ options_MPF.gamma_h = 0; % L2 regularization parameter for the fields
 MPF runs a gradient descent algorithm to solve the MPF ojbective function. The tolerance level for a small change in the parameters and the gradient, such that the gradient descent algorithm terminates can be set by (default parameters shown) 
 
 ```
-options_MPF.optTol = 1e-20;
-options_MPF.protTol = 1e-20;
+options_MPF.opt_tol = 1e-20;
+options_MPF.prog_tol = 1e-20;
 ```
 
 Increasing these values will result in a faster code at the expense of accuracy. Alternatively, the number of iterations in the gradient descent algorithm can be modified by
 
 ```
-options_MPF.maxIter = 10000;
+options_MPF.max_iter = 10000;
 ```
 
 The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence `x` can be calculated as 
@@ -187,19 +187,19 @@ where the inputs are as described in "Intermediate step: helper variables" above
 ```
 options_BML.thin = 3e3; % thinning parameter
 options_BML.burnin = 1e4; % number of samples to burn
-options_BML.nosample_MCMC = 1e7 % number of samples before burning and thinning
+options_BML.no_sample_MCMC = 1e7 % number of samples before burning and thinning
 ```
 We also provide the option to run MCMC using multiple seeds using multiple-cores, after which the samples are combined. The relevant options are (default shown)
 
 ```
-options_BML.parOpt = 0; % using only one core. A value of "1" means multiple-cores are used
+options_BML.par_opt = 0; % using only one core. A value of "1" means multiple-cores are used
 options_BML.no_seeds = 1; % number of seeds
 ```
 
 Finally, the BML algorithm will automatically stop when the average epsilon values are < `epsMax` ( as described in paper), which can be changed by (default shown)
 
 ```
-options_BML.epsMax = 1; 
+options_BML.eps_max = 1; 
 ```
 
 Thus using the above value, the BML algorithm will terminate when the average epsilon is < 1. 
