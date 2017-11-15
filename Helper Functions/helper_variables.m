@@ -1,4 +1,4 @@
-function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt] = binMatAfterComb(msa_aa,varargin)
+function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt] = helper_variables(msa_aa,varargin)
 % binMatAfterComb(msa_aa,weight_seq,phi_opt)
 % 
 % Calculates the binary matrix and amino acid information after
@@ -7,10 +7,10 @@ function [msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,am
 % Inputs:
 %       msa_aa - matrix of characters (aka amino acid MSA). Rows correspond to 
 %                sequences, and colums to observed states at a particular residue
-%       binMatAfterComb(...,'weight_seq',weight_seq)
+%       helper_variables(...,'weight_seq',weight_seq)
 %                     weight of each sequence, length is equal to the the number of
 %                     rows in msa_aa. Default is equal weighting
-%       binMatAfterComb(...,'phi_opt',phi_opt)-  (optional) 
+%       helper_variables(...,'phi_opt',phi_opt)-  (optional) 
 %                     mutant combining factor. Default: phi_opt=1 (Potts)
 % 
 % Outputs:

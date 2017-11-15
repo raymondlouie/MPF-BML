@@ -1,5 +1,5 @@
-function out = verifyParam(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
-% verifyParam(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
+function out = verify_param(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
+% verify_param(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
 % 
 % Verify the couplings
 

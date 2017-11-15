@@ -1,6 +1,6 @@
 function J_MINFLOW_mat = BML_run(J_MINFLOW_mat_array,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML)
 % BML_run(J_MINFLOW_mat_array,num_mutants_combine_array,msa_bin_unique,weight_seq_unique,options_BML)
-% 
+%
 % Implementation of RPROP algorithm
 %
 % Inputs:
@@ -12,7 +12,7 @@ function J_MINFLOW_mat = BML_run(J_MINFLOW_mat_array,msa_bin_unique,weight_seq_u
 %
 % Outputs:
 %       J_MINFLOW_mat_array - fields/coupling matrix from BML
-%        
+%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -23,12 +23,12 @@ end
 
 
 
-[verbose,optTol,progTol,no_iterations,no_seeds,parOpt,thin,burnin,...
-    nosim,gammaJ_const,gammaH_const,hpos,Jpos,hneg,Jneg,hdeltamax,...
+[verbose,epsMax,optTol,progTol,no_iterations,no_seeds,parOpt,thin,burnin,...
+    nosample_MCMC,gammaJ_const,gammaH_const,hpos,Jpos,hneg,Jneg,hdeltamax,...
     Jdeltamax,hdeltamin,Jdeltamin] = ...
-    myProcessOptions(options_BML,'verbose',1,'optTol',1e-20,'progTol',1e-20,...
+    myProcessOptions(options_BML,'verbose',1,'epsMax',1,'optTol',1e-20,'progTol',1e-20,...
     'no_iterations',10000,'no_seeds',1,'parOpt',0,'thin',3e3,'burnin',1e4,...
-    'nosim',1e7,'gammaJ_const',0.0001,'gammaH_const',0.0001,'hpos',1.05,...
+    'nosample_MCMC',1e7,'gammaJ_const',0.0001,'gammaH_const',0.0001,'hpos',1.05,...
     'Jpos',1.05,'hneg',0.95,'Jneg',0.95,'hdeltamax',0.00000001,...
     'Jdeltamax',0.0001,'hdeltamin',0.00000001,'Jdeltamin',0.00000001);
 
@@ -37,21 +37,10 @@ if parOpt
     delete(poolobj);
     parpool(no_seeds)
 end
-% hpos = 1.05;
-% Jpos= 1.05;
-%
-% hneg=0.95;
-% Jneg=0.95;
-%
-% hdeltamax = 0.001;
-% Jdeltamax = 0.0001;
-% hdeltamin = 0.00000001;
-% Jdeltamin = 0.00000001;
-
 
 num_patients = sum(weight_seq_unique);
 mut_mat = full(((msa_bin_unique')*diag(weight_seq_unique)*msa_bin_unique))/num_patients; % mutant probability matrix
-[delta_cij delta_cij_bound] = calculateStd(mut_mat,num_patients);
+[delta_cij delta_cij_bound] = helper_covar(mut_mat,num_patients);
 
 % Helper variables used in the algorithm
 cumul_num_mutants_combine_array = cumsum(num_mutants_combine_array);
@@ -101,7 +90,7 @@ Jlower = -maxNumber*ones(1,num_residues_binary*num_residues_binary);
 Jhigher = maxNumber*ones(1,num_residues_binary*num_residues_binary);
 
 % number of final MCMC samples after burning and thinning
-number_samples = ceil((nosim-burnin)/thin);
+number_samples = ceil((nosample_MCMC-burnin)/thin);
 
 % Find the location of zero couplings. These will be manually
 % set to zero in the algorithm.
@@ -124,7 +113,7 @@ for ite2=1:no_iterations
             
             curr_vector = msa_bin_unique(randvalue(ite_seeds),:);
             
-            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,nosim,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
+            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,nosample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
             
             double_mutantsum_par(ite_seeds,:) =doublemutant;
             totalnosample_par(ite_seeds)= nosample;
@@ -137,7 +126,7 @@ for ite2=1:no_iterations
             
             curr_vector = msa_bin_unique(randvalue(ite_seeds),:);
             
-            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,nosim,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
+            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,nosample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
             
             double_mutantsum_par(ite_seeds,:) =doublemutant;
             totalnosample_par(ite_seeds)= nosample;
@@ -221,14 +210,15 @@ for ite2=1:no_iterations
     
     %%%%%%%%%%
     
+    cross_thres=1/num_patients;
+    [single_error double_error epsilon_max covar_error] = helper_eps(mut_mat,mut_mat_MCMC,delta_cij,delta_cij_bound,num_patients,cumul_num_mutants_combine_array,cross_thres);
+    
+    
     time_MCMC = toc(time_MCMC);
     if ite2>1
         diffParam = sum(sum(abs(Jprev-Jcurrflat) + sum(abs(hprev-h_curr))));
         diffParamDerivative = sum(sum(abs(dJprev-dJflat) + sum(abs(dHprev-dH))));
         if verbose
-            cross_thres=1/num_patients;
-            [single_error double_error epsilon_max covar_error] = helper_eps(mut_mat,mut_mat_MCMC,delta_cij,delta_cij_bound,num_patients,cumul_num_mutants_combine_array,cross_thres);
-            
             fprintf( 'Iteration %f: Average Eps Single/Double/Connected: %f/%f/%f. Diff Param/Derivative: %f/%f, Time: %f\n', ite2, single_error,double_error,covar_error,diffParam,diffParamDerivative,time_MCMC );
         end
     end
@@ -250,6 +240,14 @@ for ite2=1:no_iterations
             break;
         end
     end
+    
+    
+    if single_error<epsMax & double_error<epsMax
+        fprintf('Average epsilon < %f \n',epsMax);
+        break;
+        
+    end
+    
     %%%%%%%%%
     
     hprev  = h_curr;
@@ -271,6 +269,7 @@ for ite2=1:no_iterations
     
     dHprev = dH;
     dJprev = dJflat;
+        
     
 end
 J_MINFLOW_mat = (J_curr - diag(diag(J_curr))) + diag(h_curr);
