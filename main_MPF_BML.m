@@ -98,32 +98,28 @@ end
 % Step 1: Mutant combining
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-time_step1_mutantcombine = tic();
+time_step1_mutant_combine = tic();
 
-% phi_opt = mutantCombining(msa_aa, 'phi_array',[0:0.01:1]);
-phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq);
-% phi_opt = mutantCombining(msa_aa);
+% phi_opt = mutant_combining(msa_aa, 'phi_array',[0:0.01:1]);
+phi_opt = mutant_combining(msa_aa, 'weight_seq',weight_seq);
+% phi_opt = mutant_combining(msa_aa);
 
-time_step1_mutantcombine = toc(time_step1_mutantcombine);
+time_step1_mutant_combine = toc(time_step1_mutant_combine);
 
-disp(['Step 1: Mutant combining, Time: ' num2str(time_step1_mutantcombine) ' seconds']);
+disp(['Step 1: Mutant combining, Time: ' num2str(time_step1_mutant_combine) ' seconds']);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Intermediate step - calculate extended binary matrix, and other statistics
 %                     required for MPF and RPROP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-time_extendBin = tic();
+time_helper_variable = tic();
 
 [msa_bin,msa_bin_unique,weight_seq_unique, freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = ...
-    binMatAfterComb(msa_aa,'weight_seq',weight_seq,'phi_opt',phi_opt);
-% [msa_bin,msa_bin_unique,weight_seq_unique, freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array] = binMatAfterComb(msa_aa,weight_seq,phi_opt);
+    helper_variables(msa_aa,'weight_seq',weight_seq,'phi_opt',phi_opt);
 
-% mut_mat = full(((msa_bin_unique')*diag(weight_seq_unique)*msa_bin_unique))/num_patients; % mutant probability matrix
-% [delta_cij delta_cij_bound] = calculateStd(mut_mat,num_patients);
+time_helper_variable = toc(time_helper_variable);
 
-time_extendBin = toc(time_extendBin);
-
-disp(['Intermediate step - Extended binary matrix and other stats, Time: ' num2str(time_extendBin) ' seconds']);
+disp(['Intermediate step - Generating helper variables, Time: ' num2str(time_helper_variable) ' seconds']);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Step 2: MPF
@@ -147,7 +143,7 @@ disp(['Step 2: MPF, Time: ' num2str(time_step2_MPF) ' seconds']);
 time_step2_BML = tic();
 
 options_BML.no_iterations=50;
-options_BML.epsMax = 1.25;
+options_BML.eps_max = 1.25;
 
 J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
 
@@ -161,6 +157,6 @@ num_residues_binary = size(msa_bin_unique,2);
 % Verification of the landscape
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-out = verifyParam(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
+out = verify_param(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
 
-out = verifyParam(J_MPF_BML(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
+out = verify_param(J_MPF_BML(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);

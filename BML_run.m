@@ -23,16 +23,16 @@ end
 
 
 
-[verbose,epsMax,optTol,progTol,no_iterations,no_seeds,parOpt,thin,burnin,...
-    nosample_MCMC,gammaJ_const,gammaH_const,hpos,Jpos,hneg,Jneg,hdeltamax,...
+[verbose,eps_max,optTol,progTol,no_iterations,no_seeds,par_opt,thin,burnin,...
+    no_sample_MCMC,gammaJ_const,gammaH_const,hpos,Jpos,hneg,Jneg,hdeltamax,...
     Jdeltamax,hdeltamin,Jdeltamin] = ...
-    myProcessOptions(options_BML,'verbose',1,'epsMax',1,'optTol',1e-20,'progTol',1e-20,...
-    'no_iterations',10000,'no_seeds',1,'parOpt',0,'thin',3e3,'burnin',1e4,...
-    'nosample_MCMC',1e7,'gammaJ_const',0.0001,'gammaH_const',0.0001,'hpos',1.05,...
+    myProcessOptions(options_BML,'verbose',1,'eps_max',1,'optTol',1e-20,'progTol',1e-20,...
+    'no_iterations',10000,'no_seeds',1,'par_opt',0,'thin',3e3,'burnin',1e4,...
+    'no_sample_MCMC',1e7,'gammaJ_const',0.0001,'gammaH_const',0.0001,'hpos',1.05,...
     'Jpos',1.05,'hneg',0.95,'Jneg',0.95,'hdeltamax',0.00000001,...
     'Jdeltamax',0.0001,'hdeltamin',0.00000001,'Jdeltamin',0.00000001);
 
-if parOpt
+if par_opt
     poolobj = gcp('nocreate');
     delete(poolobj);
     parpool(no_seeds)
@@ -90,7 +90,7 @@ Jlower = -maxNumber*ones(1,num_residues_binary*num_residues_binary);
 Jhigher = maxNumber*ones(1,num_residues_binary*num_residues_binary);
 
 % number of final MCMC samples after burning and thinning
-number_samples = ceil((nosample_MCMC-burnin)/thin);
+number_samples = ceil((no_sample_MCMC-burnin)/thin);
 
 % Find the location of zero couplings. These will be manually
 % set to zero in the algorithm.
@@ -108,12 +108,12 @@ for ite2=1:no_iterations
     double_mutantsum_par = zeros(no_seeds,num_residues_binary*num_residues_binary);
     num_mutant_array_par = zeros(no_seeds,number_samples);
     
-    if parOpt
+    if par_opt
         parfor ite_seeds=1:no_seeds
             
             curr_vector = msa_bin_unique(randvalue(ite_seeds),:);
             
-            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,nosample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
+            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,no_sample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
             
             double_mutantsum_par(ite_seeds,:) =doublemutant;
             totalnosample_par(ite_seeds)= nosample;
@@ -126,7 +126,7 @@ for ite2=1:no_iterations
             
             curr_vector = msa_bin_unique(randvalue(ite_seeds),:);
             
-            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,nosample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
+            [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,no_sample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
             
             double_mutantsum_par(ite_seeds,:) =doublemutant;
             totalnosample_par(ite_seeds)= nosample;
@@ -242,8 +242,8 @@ for ite2=1:no_iterations
     end
     
     
-    if single_error<epsMax & double_error<epsMax
-        fprintf('Average epsilon < %f \n',epsMax);
+    if single_error<eps_max & double_error<eps_max
+        fprintf('Average epsilon < %f \n',eps_max);
         break;
         
     end
@@ -278,6 +278,6 @@ J_MINFLOW_mat_array = J_MINFLOW_mat(:);
 J_MINFLOW_mat_array(indZero)=0;
 J_MINFLOW_mat = reshape(J_MINFLOW_mat_array,num_residues_binary,num_residues_binary);
 
-if parOpt
+if par_opt
     delete(poolobj)
 end

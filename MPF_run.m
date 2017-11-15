@@ -24,9 +24,9 @@ end
 num_patients = sum(weight_seq_unique);
 
 
-[options_MPF.verbose,options_MPF.optTol,options_MPF.progTol,options_MPF.maxIter,options_MPF.suffDec,options_MPF.memory,options_MPF.lambda_h,options_MPF.lambda_J,options_MPF.gamma_h,options_MPF.gamma_J,maxIterMPF] = ...
-    myProcessOptions(options_MPF,'verbose',1,'optTol',1e-20,'progTol',1e-20,...
-    'maxIter',10000,'suffDec',1e-4,'memory',10,'lambda_h',0,'lambda_J',10/num_patients,'gamma_h',0,'gamma_J',10/num_patients,'maxIterMPF',2);
+[options_MPF.verbose,options_MPF.opt_tol,options_MPF.prog_tol,options_MPF.max_iter,options_MPF.suffDec,options_MPF.memory,options_MPF.lambda_h,options_MPF.lambda_J,options_MPF.gamma_h,options_MPF.gamma_J,max_iter_MPF] = ...
+    myProcessOptions(options_MPF,'verbose',1,'opt_tol',1e-20,'prog_tol',1e-20,...
+    'max_iter',10000,'suffDec',1e-4,'memory',10,'lambda_h',0,'lambda_J',10/num_patients,'gamma_h',0,'gamma_J',10/num_patients,'max_iter_MPF',2);
 
 % Store location of ones in msa_bin_unique, and the sequences which are one
 % Hamming distance away. Used for faster computation of MPF algorithm
@@ -57,7 +57,7 @@ diagone = diag(ones(1,num_residues_binary));
 ind_diag = find(diagone(:)==1); % location of diagonal entries in flattened array
 ind_nodiag = find(diagone(:)==0); % location of non-diagonal entries in flattend array
 
-for indMPF=1:maxIterMPF
+for indMPF=1:max_iter_MPF
         J_MINFLOW_array_init = helper_L1(@(J)helper_MPF_run( J, msa_bin_unique',xstartpos,darraystartNonzeroPos,darrayNonzeroPos,darrayNonzero,dactvalues,xarray,xpos,weight_seq_unique,num_mutant_xarray,num_mutant_dplusxarray  ),J_MINFLOW_array_init(:),ind_diag,ind_nodiag,options_MPF);
 end
 JL1L2_allcouplings = make_symmetric(J_MINFLOW_array_init);
