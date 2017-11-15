@@ -76,7 +76,7 @@ Choose the optimal combining factor from `phi_array`, a vector of possible value
 ```
 phi_array = [0:0.1:1]; 
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-phi_opt = mutantCombining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);
+phi_opt = mutant_combining(msa_aa, 'weight_seq',weight_seq,'phi_array',phi_array);
 ```
 
 The default values of weight_seq is set to equal weighting per patient, i.e.,
@@ -89,13 +89,13 @@ while the default value of phi_array is
 
 Thus running 
 
-`phi_opt = mutantCombining(msa_aa);`
+`phi_opt = mutant_combining(msa_aa);`
 
 will produce the optimal combining factor using these default values.
 
 #### Intermediate step: helper variables
 
-The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `binMatAfterComb.m`. These helper variables are 
+The MPF (Step 2) and BML (Step 3) functions both require  helper variables, produced by the function `helper_variables.m`. These helper variables are 
 
 `msa_bin` - binary extended matrix after combining with factor `phi_opt`
 
@@ -118,7 +118,7 @@ Calculate the helper variables for the Ising model and equal weight per patient:
 ```
 phi_opt = 0; % Ising model
 weight_seq = ones(size(msa_aa,1),1) ; % equal weighting per patient
-[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = binMatAfterComb(msa_aa,'weight_seq','phi_opt');
+[msa_bin, msa_bin_unique,weight_seq_unique,freq_single_combine_array,amino_single_combine_array,num_mutants_combine_array,phi_opt]  = helper_variables(msa_aa,'weight_seq','phi_opt');
 ```
 
 If `weight_seq` is not specified, it is set to equal weighting per patient, i.e.,
