@@ -22,7 +22,7 @@
 This repository contains 
 
 1. Implementation (in MATLAB) of the MPF-BML framework, an algorithm which infers the parameters of the maximum entropy distribution using  the Potts model.  We apply this framework  to infer the fitness landscape of gp160 based on its sequence data, however the framework can be used for any problem requiring inference of the maximum entropy parameters. (gp160 is a protein in HIV which is the primary target of antibodies.)
-2. Preprocessed mulitple sequence alignment (MSA) of gp160 (fasta format) and
+2. Preprocessed mulitple sequence alignment (MSA) of gp160 (FASTA format) and
 3. Gp160 landscape (MATLAB .mat format)
 
 as described in 
@@ -54,14 +54,14 @@ The MPF-BML computational framework is an algorithm to infer the field and coupl
 
 which runs the complete framework, and plots various statistics to confirm the inferred parameters. The code has been deliberately left as a script, not a function, to allow users  to explore the different steps of the framework. Example data is provided. 
 
-The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. Before describing the steps, first note that each function requires as input  a sample character matrix `msa_aa`, which can be formed from a fasta file with name `fasta_name` by
+The framework comprises of three main functions corresponding to the three key steps of the algorithm, each of which can be run independently of the other. Before describing the steps, first note that each function requires as input  a sample character matrix `msa_aa`, which can be formed from a FASTA file with name `fasta_name` by
 
 ```
 [Header_fasta, Sequence_fasta] = fastaread(fasta_name);
 msa_aa = cell2mat(Sequence_fasta');
 ```
 
-The above code however, assumes that each sequence is of the same length, which you will have to ensure yourself. An example fasta file is provided in the folder "MSA and Landscape".
+The above code however, assumes that each sequence is of the same length, which you will have to ensure yourself. An example FASTA file is provided in the folder "MSA and Landscape".
 
 We now describe the three steps, where we assume all examples are to be run in the MATLAB command prompt.
 
