@@ -163,9 +163,9 @@ Increasing these values will result in a faster code at the expense of accuracy.
 options_MPF.max_iter = 10000;
 ```
 
-The output is fields/couplings matrix. Note that the non-diagonal elements are a factor of 1/2 the true couplings, thus the energy of sequence `x` can be calculated as 
+The output is fields/couplings matrix. The energy of sequence `x` can thus be calculated as 
 
-`x'*J_MPF*x`
+`x'*triu(J_MPF)*x`
 
 #### Step 3: BML
 
@@ -210,9 +210,9 @@ The processed MSA (as described in the paper) in fasta format `hivgp160_processe
 
 ## gp160 landscape
 
-The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where J_MPF_BML is the field/coupling matrix. Note the the off-diagonal entries are half the value of the true couplings, thus the energy of sequence `x` is calculated as 
+The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where J_MPF_BML is the field/coupling matrix. The energy of sequence `x` is calculated as 
 
-`x'*J_MPF_BML*x`
+`x'*triu(J_MPF_BML)*x`
 
 amino_acid_after_combining is the amino acids in decreasing order of frequency at each of the 815 residues, and mut_mat is the mutant probaility matrix (after mutant combining).
 
