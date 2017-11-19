@@ -210,7 +210,7 @@ The processed MSA (as described in the paper) in fasta format `hivgp160_processe
 
 ## gp160 landscape
 
-The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where J_MPF_BML is the field/coupling matrix. The energy of sequence `x` is calculated as 
+The gp160 field and coupling (landscape) parameters are in `hivgp160_landscape.mat`in the folder "MSA and Landscape", where `J_MPF_BML` is the field/coupling matrix. The energy of sequence `x` is calculated as 
 
 `x'*triu(J_MPF_BML)*x`
 
