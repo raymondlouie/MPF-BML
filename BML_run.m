@@ -1,4 +1,4 @@
-function J_MINFLOW_mat = BML_run(J_MINFLOW_mat_array,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML)
+function J_MINFLOW_mat = BML_run(J_MINFLOW_mat,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML)
 % BML_run(J_MINFLOW_mat_array,num_mutants_combine_array,msa_bin_unique,weight_seq_unique,options_BML)
 %
 % Implementation of RPROP algorithm
@@ -14,7 +14,8 @@ function J_MINFLOW_mat = BML_run(J_MINFLOW_mat_array,msa_bin_unique,weight_seq_u
 %       J_MINFLOW_mat_array - fields/coupling matrix from BML
 %
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+J_MINFLOW_mat_array = ((J_MINFLOW_mat + J_MINFLOW_mat')/2);
+J_MINFLOW_mat_array = J_MINFLOW_mat_array(:);
 
 %% Process Options
 if nargin < 5
@@ -114,7 +115,6 @@ for ite2=1:no_iterations
             curr_vector = msa_bin_unique(randvalue(ite_seeds),:);
             
             [doublemutant nosample number_mutants]= gibbs_potts_mex(curr_vector,J_MINFLOW_mat_array,num_residues_binary,no_sample_MCMC,cumul_num_mutants_combine_array,num_mutants_combine_array,burnin,thin,number_samples,protein_length_aa);
-            
             double_mutantsum_par(ite_seeds,:) =doublemutant;
             totalnosample_par(ite_seeds)= nosample;
             num_mutant_array_par(ite_seeds,:) =number_mutants;

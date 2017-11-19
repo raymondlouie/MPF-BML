@@ -1,4 +1,4 @@
-function out = verify_param(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
+function out = verify_param(Jstore_mat,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
 % verify_param(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_combine_array)
 % 
 % Verify the couplings
@@ -15,6 +15,8 @@ function out = verify_param(Jstore,msa_bin_unique,weight_seq_unique,num_mutants_
 %        
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Jstore = ((Jstore_mat + Jstore_mat')/2);
+Jstore = Jstore(:);
 
 %% Process Options
 if nargin < 5

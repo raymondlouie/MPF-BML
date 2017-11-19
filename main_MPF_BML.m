@@ -143,9 +143,9 @@ disp(['Step 2: MPF, Time: ' num2str(time_step2_MPF) ' seconds']);
 time_step2_BML = tic();
 
 options_BML.no_iterations=50;
-options_BML.eps_max = 1.25;
+options_BML.eps_max = 1.15;
 
-J_MPF_BML =BML_run(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
+J_MPF_BML =BML_run(J_MPF,msa_bin_unique,weight_seq_unique,num_mutants_combine_array,options_BML);
 
 time_step2_BML = toc(time_step2_BML);
 
@@ -157,6 +157,8 @@ num_residues_binary = size(msa_bin_unique,2);
 % Verification of the landscape
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-out = verify_param(J_MPF(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
+% verify MPF parameterse
+out = verify_param(J_MPF,msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
 
-out = verify_param(J_MPF_BML(:),msa_bin_unique,weight_seq_unique,num_mutants_combine_array);
+% verify MPF-BML parameters
+out = verify_param(J_MPF_BML,msa_bin_unique,weight_seq_unique,num_mutants_combine_array);

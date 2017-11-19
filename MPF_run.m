@@ -61,3 +61,5 @@ for indMPF=1:max_iter_MPF
         J_MINFLOW_array_init = helper_L1(@(J)helper_MPF_run( J, msa_bin_unique',xstartpos,darraystartNonzeroPos,darrayNonzeroPos,darrayNonzero,dactvalues,xarray,xpos,weight_seq_unique,num_mutant_xarray,num_mutant_dplusxarray  ),J_MINFLOW_array_init(:),ind_diag,ind_nodiag,options_MPF);
 end
 JL1L2_allcouplings = make_symmetric(J_MINFLOW_array_init);
+JL1L2_allcouplings = reshape(JL1L2_allcouplings,num_residues_binary,num_residues_binary);
+JL1L2_allcouplings = triu(JL1L2_allcouplings)*2 - diag(diag(JL1L2_allcouplings));
