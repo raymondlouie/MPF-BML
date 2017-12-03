@@ -21,7 +21,7 @@
 
 This repository contains 
 
-1. Implementation (in MATLAB) of the MPF-BML framework, an algorithm which infers the parameters of the maximum entropy distribution using  the Potts model.  We apply this framework  to infer the fitness landscape of gp160 based on its sequence data, however the framework can be used for any problem requiring inference of the maximum entropy parameters. (gp160 is a protein in HIV which is the primary target of antibodies.)
+1. Implementation (in MATLAB) of the Minimum Probability Flow-Boltzmann Machine Learning (MPF-BML) framework, an algorithm which infers the parameters of the maximum entropy distribution using  the Potts model.  We apply this framework  to infer the fitness landscape of gp160 based on its sequence data, however the framework can be used for any problem requiring inference of the maximum entropy parameters. (gp160 is a protein in HIV which is the primary target of antibodies.)
 2. Preprocessed mulitple sequence alignment (MSA) of gp160 (FASTA format) and
 3. Gp160 landscape (MATLAB .mat format)
 
