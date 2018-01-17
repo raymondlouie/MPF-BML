@@ -27,7 +27,7 @@ This repository contains
 
 as described in 
 
-RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness landscape of the Human Immunodeficiency Virus envelope protein that is targeted by antibodies", 2017
+RHY Louie, KJ Kaczorowski, JP Barton, AK Chakraborty, MR McKay, "The fitness landscape of the Human Immunodeficiency Virus envelope protein that is targeted by antibodies", Proceedings of the National Academy of Sciences (PNAS), 2018
 
 ## Installation
 
